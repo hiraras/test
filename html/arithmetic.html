@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/common/common.css" />
+		<title>test</title>
+		<style>
+		</style>
+	</head>
+	<body>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script>
+		// 冒泡排序
+		function sort(arr) {
+			for (var i = 1; i < arr.length; i++) {
+				for (var j = i;j > 0; j--) {
+					if (arr[j] < arr[j - 1]) {
+						var temp = arr[j];
+						arr[j] = arr[j - 1];
+						arr[j - 1] = temp;
+					} else {
+						break;
+					}
+				}
+			}
+			return arr;
+		}
+		// 二分查找法,针对有序数组
+		function find(arr, num) {
+			arr = sort(arr);
+			var maxLoop = 30;
+			var loopTimes = 0;
+			var start = 0;
+			var end = arr.length;
+			var index = Math.floor((start + end) / 2);
+			var temp = arr[index];
+			while(temp !== num) {
+				num > temp ? start = index: end = index;
+				index = Math.floor((start + end) / 2);
+				console.log(start, end);
+				temp = arr[index];
+				if (start + 1 >= end) {
+					return false;
+				}
+				loopTimes++;
+				if (loopTimes > 30) {
+					break;
+				}
+			}
+			return true;
+		}
+		var r = find([1,3,4,5,222,456,452,34,1223333,6345,35,2], 2);
+		console.log(r);
+	</script>
+</html>

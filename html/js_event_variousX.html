@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/common/common.css" />
+		<title>js点击事件中event里的各种x的值</title>
+		<style>
+			.ctn {
+				position: relative;
+				margin-left: 30px;
+			}
+			.test {
+				width: 500px;
+				height: 500px;
+				background: #00BFFF;
+				margin-left: 100px;
+				margin-right: -100px;
+				border: 5px solid black;
+				padding: 10px;
+				overflow: scroll;
+			}
+			.inner {
+				height: auto;
+				background: #008000;
+				margin-bottom: 200px;
+				margin-top: auto;
+			}
+			.inner2 {
+				margin-left: auto;
+				margin-right: 100px;
+				width: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ctn">
+			<div class="test" name="div">
+				<p>ajoiefjaewpofjawepofijawepfoiawejfopaiwjfawefawefawefawefawefawefawefawfaef</p>
+				<div class="inner" name="div">123</div>
+				<span class="inner2">hahaha</span>
+				<input type="button" value="当前页打开" onclick="top.location='http://www.baidu.com','_blank'">
+			</div>
+		</div>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script>
+		// offset page client scroll
+// 		$(".test").click(function(e) {
+// 			console.log(e);
+// 		});
+		var elem = document.getElementsByClassName("test")[0];
+		// 边缘为最外边缘的意思
+		// 元素的width包括滚动条,如设置width=500,则内部宽度加上滚动条为500,padding不在该范围(测试时滚动条宽17px)
+		// elem.offsetWidth为width加上padding加上border
+		// elem.clientWidth为width减去滚动条的宽度加上padding
+		// elem.scrollWidth为clientWidth加上被遮住的部分
+		// 高度同理
+		console.log(elem.offsetWidth, elem.clientWidth, elem.scrollWidth);
+		console.log(elem.offsetHeight, elem.clientHeight, elem.scrollHeight);
+		// 如果父级没有position则elem.offsetLeft为边框位置开始到文档边缘的距离(body),
+		// 如果父级有position则为边框位置到父级元素的边缘的距离
+		// elem.clientLeft为padding边缘位置到边框最边缘位置(border宽度)
+		// elem.scrollLeft为被卷起的部分的距离
+		console.log(elem.offsetLeft, elem.clientLeft, elem.scrollLeft);
+		elem.addEventListener("click", function(e) {
+			// e.x为点击位置到浏览器可视区域边缘距离
+			// e.clientX为点击位置到浏览器可视区域边缘距离
+			// e.layerX为点击位置到点击位置到该元素边框边缘距离
+			// e.offsetX为点击位置到该元素边框距离(不包括边框)
+			// e.pageX为点击位置到文档边缘距离(包括滚动卷起的距离)
+			// e.screenY为点击位置到屏幕边缘的距离
+			console.log(e.x, e.clientX, e.layerX, e.offsetX, e.pageX, e.screenX);
+			// console.log(e.y, e.clientY, e.layerY, e.offsetY, e.pageY, e.screenY);
+		}, false);
+// 		elem.addEventListener("click", function(e) {
+// 			console.log(2);
+// 		}, false);
+	</script>
+</html>

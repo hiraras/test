@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/common/common.css" />
+		<link rel="stylesheet" href="../css/test.css" />
+		<title>正则</title>
+	</head>
+	<body>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script type="text/javascript">
+		function test() {
+			'use strict';
+			// 正则匹配的时候根据^和$符号决定匹配开始位置
+			// 没有这两个符号且存在g,从左到右,逐步进行匹配,匹配到一个满足条件的子串(可以为"",此时可认定为匹配到某个位置)
+			// 然后从上一个子串的结束位置继续匹配
+			// \b可以匹配空格或字符串的开始和结束
+			// 断言的内容会拿去匹配,但replace中,匹配到的内容不会包含断言中模式对应的内容
+			// (?=)断言前面的模式之后存在括号内的模式
+			// (?<=)断言括号内的模式之后存在后面的模式
+			// (?!)断言前面的模式之后不存在括号内的模式
+			// (?<!)断言括号内的模式之后不存在后面的模式
+			// (?:)非捕获分组,与()相对
+			// (?<groupName>) 调用exec方法返回的result上有result.groups[groupName]值,值为具名组匹配到的内容
+			
+			var reg2 = /(?<!\.)(?=((\d{3})+)[\b|\.])/g; // 或 /(?=(\d{3})+[\b|\.])/g
+			var str2 = '1234567890.214156';
+			// 将匹配到的内容(这里是位置即"")替换成return的值
+			var ss = str2.replace(reg2, function(...args){
+				console.log(args[0]);
+				return ',';
+			})
+			console.log(ss);
+			
+			var reg3 = /\d+\b/g;
+			var str3 = '12 34 56';
+			console.log(str3.replace(reg3, function(...args) {
+				console.log(args);
+				return args[0];
+			}));
+			
+			// reg实例有个lastIndex属性,可以手动修改
+			// 每次匹配后更新lastIndex值,以确定下次匹配的开始位置
+			var reg4 = /\d/g;
+			var str3 = "12345";
+			reg4.exec(str3);
+			console.log(reg4.lastIndex);
+		}
+		
+		// test();
+		
+	</script>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style>
+        * {
+			margin:0;
+            padding:0;
+        }
+		.move {
+			transition: transform 0.3s;
+			transform: translateX(0);
+		}
+		.window {
+			width: 300px;
+			height: 200px;
+			overflow: hidden;
+		}
+		#slider {
+			width: 1500px;
+			height: 200px;
+			font-size: 0;
+		}
+		.img {
+			width: 300px;
+			height: 200px;
+			display: inline-block;
+		}
+        </style>
+    </head>
+    <body>
+        <div class="loop">
+			<div class="window">
+				<div id="slider" class="move">
+					<img src="../assets/images/01.jpg" class="img" />
+					<img src="../assets/images/02.jpg" class="img" />
+					<img src="../assets/images/03.jpg" class="img" />
+					<img src="../assets/images/01.jpg" class="img" />
+					<img src="../assets/images/02.jpg" class="img" />
+				</div>
+			</div>
+			<div id="switch-btns">
+				<button data-num="0">1<button>
+				<button data-num="1">2<button>
+				<button data-num="2">3<button>
+			</div>
+        </div>
+    </body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script>
+		function slider({ width = 300, animeDuration = 300, changeTime = 1000, id = 'slider' } = {}) {
+			var current = 0;
+			var len = $("#" + id).children().length;
+			var timer = setInterval(animate, changeTime);
+			
+			function move(distance, callback) {
+				$('#slider').css({ transform: `translateX(${distance * -1}px)` });
+				callback && callback();
+			}
+			
+			function animate() {
+				if (current === len - 2) {
+					move(width * (len - 1), function() {
+						setTimeout(function() {
+							$('#slider').removeClass('move');
+							move(width);
+							current = 1;
+						}, animeDuration);
+					});
+				} else {
+					if (current === 1) {
+						$('#slider').addClass('move');
+					}
+					current ++;
+					move(width * current);
+				}
+			}
+			
+			$('#switch-btns button').on('click', function(elem) {
+				var num = +elem.target.dataset.num || 0;
+				$('#' + id).addClass('move');
+				current = num;
+				move(width * num);
+				clearInterval(timer);
+				timer = setInterval(animate, changeTime);
+			});
+		};
+		slider();
+	</script>
+</html>

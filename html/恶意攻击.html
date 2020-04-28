@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		// csrf攻击,攻击者通过某些方法拿到cookie,就可以进行恶意请求;同时服务器如果用session保存的话可扩展性差,效率也会有影响
+		// 解决方法:token验证,只要重新计算出token再与用户的进行比较,就不需要将验证信息存储,效率也高(需要一个别人不知道的秘银来加密生成)
+		
+		// xss攻击,跨站脚本注入,在没有转义的网页通过在input输入js代码可执行该代码,进而让攻击者拿到用户信息,造成破坏
+		// 解决方法:将诸如<script>alert(document.cookie);<\/script>的代码中的<、>符号转义
+		
+		// sql注入,攻击者可将select * from xxx_table where user="" or 1=1这种必定可通过验证的sql语句发送到服务器,免除登录验证
+		// 解决方法:服务端进行判断/过滤等,书写优秀的sql语句
+	</script>
+</html>

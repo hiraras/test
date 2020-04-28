@@ -1,0 +1,272 @@
+1.display有属性值:none;block;inline-block;inline;table;list-item;inline-table;table-cell;
+
+2.无论内联元素还是块级元素，height: auto都是呈现包裹性，即高度由子级元素撑开。但是父元素设置height: auto会导致子元素height: 100%百分比失效。
+<template>
+	.container {
+		background-color: red;
+		height: 400px;
+	}
+	.inner {
+		height: 100%;
+	}
+	.innnnner{
+		height: 100%;
+	}
+	
+	<div class="container">
+		<div class="inner">
+			<div class="innnnner">
+				
+			</div>
+		</div>
+	</div>
+</template>
+
+3.流体布局之下，块级元素的宽度width: auto是默认撑满父级元素的。这里的撑满并不同于width: 100%的固定宽度，而是像水一样能够根据margin不同而自适应的宽度。
+
+4.css的属性非常有意思，正常流下，如果块级元素的width是个固定值，margin是auto，则margin会撑满剩下的空间；
+如果margin是固定值，width是auto，则width会撑满剩下的空间。这就是流体布局的根本所在。
+
+5.外在盒子是决定元素排列方式的盒子，即决定盒子具有块级特性还是内联特性的盒子。外在盒子负责结构布局。内在盒子是决定元素内部一些属性是否生效的盒子。内在盒子负责内容显示。
+如 display: inline-table; 外在盒子就是inline，内在盒子就是table。外在盒子决定了元素要像内联元素一样并排在一排显示，内在盒子则决定了元素可以设置宽高、垂直方向的margin等属性。
+
+6.在css中，!important的权重相当的高，但是由于宽高会被max-width/min-width覆盖，所以!important会失效。
+
+7.box-sizing有属性值:margin-box;padding-box;border-box;content-box;
+border-box宽度计算为:content+padding+border;
+
+8.替换元素
+替换元素是指内容可以替换的元素，实际上就是content box可以被替换的元素。如存在src=""属性的<img> <audio> <video> <iframe>元素和可以输入文本的<input> <select> <textarea>元素等。
+所有替换元素都是内联元素，默认display属性是inline或inline-block（除了input[type="hidden"]默认display: none;）。
+替换元素有自己默认的样式、尺寸（根据浏览器不同而不同），而且其vertical-align属性默认是bottom（非替换元素默认值是baseline）。
+
+9.content样式
+对于非替换元素如div,其content就是div内部的元素。
+而对于替换元素，其content就是可替换部分的内容。
+CSS中的content属性主要用伪元素:before/:after中，除了做字体库和少写个div，对于一般开发来说并无卵用。
+
+10.currentColor是css中为数不多的变量，指当前文字的颜色值，非常好用
+
+11.background-clip属性裁剪背景，border-box裁剪到边框;padding-box裁剪到padding的范围(包括padding部分);content-box裁剪到实际元素宽度(content)
+<template>
+	<div class="container">
+		fffff
+	</div>
+	.container{
+		height: 100%;
+		color: blue;
+		padding: 20px 0;
+		background-color: currentcolor;
+		background-clip: content-box;
+	}
+</template>
+
+12.设置margin值为负数，此时div元素的宽度是比父级元素的宽度大200px的。
+但是这种情况只会发生在元素是流布局的时候，即元素width是默认的auto并且可以撑满一行的时候。
+如果元素设定了宽度，或者元素设置了float: left / position: absolute这样的属性改变了流体布局，那么margin为负也无法改变元素的宽度了。
+
+13.块级元素的垂直方向会发生margin合并，存在以下三种场景：
+相邻兄弟元素之间margin合并；
+父元素margin-top和子元素margin-top，父元素margin-bottom和子元素margin-bottom；
+空块级元素自身的margin-top和margin-botom合并.
+要阻止margin合并，可以：1. 给元素设置 bfc；2. 设置border或padding阻隔margin；3. 用内联元素（如文字）阻隔；4. 给父元素设定高度
+
+14.margin: auto能在块级元素设定宽高之后自动填充剩余宽高，典型应用是块级元素水平局中的实现。
+auto的特性是，如果两侧都是auto，则两侧均分剩余宽度；如果一侧margin是固定的，另一侧是auto，则这一侧auto为剩余宽度。（目测可以用来实现某些定位，而不用使用float）
+
+15.border可以用来创建三角形等特殊图形
+<template>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	div{
+	  float: left;
+	  margin: 20px;
+	}
+	div:nth-child(1){
+	  width: 20px;
+	  height: 20px;
+	  border: 20px solid;
+	  border-color: blue red orange green;
+	}
+	div:nth-child(2){
+	  width: 20px;
+	  height: 20px;
+	  border: 20px solid;
+	  border-color: blue transparent transparent transparent;
+	}
+	div:nth-child(3){
+	  border: 20px solid;
+	  border-color: blue transparent transparent transparent;
+	}
+	div:nth-child(4){
+	  border-style: solid;
+	  border-width: 40px 20px;
+	  border-color: blue transparent transparent transparent;
+	}
+	div:nth-child(5){
+	  border-style: solid;
+	  border-width: 40px 20px;
+	  border-color: blue red transparent transparent;
+	}
+</template>
+
+16.在内联元素的垂直方向对齐中，基线是最为重要的概念。line-height定义的就是两基线之间的距离，vertical-align的默认值就是基线。基线的定义则是字母 x 的下边缘。
+css中有个概念叫x-height，指的是小写字母 x 的高度。vertical-align: middle对齐的就是基线往上1/2x-height高度的地方，可以理解为近似字母 x 的交叉点。
+css中除了px/em/rem等，还有个单位是ex。指的就是小写字母x的高度，即x-height。
+
+17.line-height
+line-height属性用于设置多行元素的空间量，如多行文本的间距。
+对块级元素来说，line-height决定了行框盒子的最小高度。注意是行框盒子的最小高度，而不是块级元素的实际高度。
+对于非替代的 inline 元素，它用于计算行框盒子的高度。此时内联元素的行框盒子的高度完全由line-height决定，不受其他任何属性的影响。
+
+行距是指一行文本和相邻文本之间的距离。行距 = line-height — font-size。
+行距具有上下等分的机制：意思就是文字上下的行距是一样的，各占一半，这也是line-height能让内联元素垂直居中的原因。
+
+18.vertical-align
+针对的是content的部分，不包括padding
+vertical-align属性起作用的前提必须是作用在内联元素上。 即display计算值为inline inline-block inline-table table-cell的元素。
+线类： 如baseline（默认值） top middle bottom
+（baseline使元素的基线与父元素的基线对齐，middle使元素的中部与父元素的基线往上x-height的一半对齐。top bottom使元素及其后代元素的底部与整行或整块的底部对齐。）
+文本类： text-top text-bottom（使元素的顶部与父元素的字体顶部对齐。）
+上标下标： sub super（使元素的基线与父元素的下标基线对齐。）可以用来做数字的幂运算表示，sub为下标，super为上标
+数值： 20px 2em （默认值baseline相当于数值的 0 。使元素的基线对齐到父元素的基线之上的给定长度，数值正值是基线往上偏移，负值是往下偏移，借此可以实现元素垂直方向精确对齐。）
+百分比： 20% （使元素的基线对齐到父元素的基线之上的给定百分比，该百分比是line-height属性的百分比。）
+
+<template>
+	<div class="container">
+		<span class="span1">ddd</span>
+		<span class="span2">ddd</span>
+	</div>
+	.container {
+		font-size: 14px;
+		line-height: 30px;
+	}
+	.span1 {
+		font-size: 14px;
+		display: inline-block;
+	}
+	.span2 {
+		background: #3596FC;
+		font-size: 30px;
+		display: inline-block;
+	}
+</template>
+由于container行高是30px（但是实际高度为37px），所以字母x和span元素的高度都是30px。但是字母x的font-size较小，span元素的font-size较大;
+而行高一样的情况下font-size越大基线的位置越偏下，此时两者的基线不在同一水平线上.由于内联元素默认基线对齐，
+所以字母x和span元素发生了位移以使基线对齐，导致div高度变大。而此时字母x的半行距比span元素的半行距大，大出的部分就是div的高度增加的部分。
+
+一个设置了display: inline-block的元素：
+如果元素内部没有内联元素，则该元素基线就是该元素下边缘；
+如果元素设置了overflow为hidden auto scroll，则其基线就是该元素下边缘；
+如果元素内部还有内联元素，则其基线就是内部最后一行内联元素的基线。
+<template>
+	<div class="container">
+		x
+		<!-- 如果下面span中的x去掉了，则基线为该元素下边缘，又由于默认基于baseline所以会导致父元素下边框和span间有一条空隙 -->
+		<span class="span1">x</span>
+	</div>
+	.container {
+		font-size: 14px;
+		border: 1px solid black;
+	}
+	.span1 {
+		display: inline-block;
+		height: 100px;
+		width: 100px;
+		background: #3596FC;
+	}
+</template>
+值得一提的是，由于替换元素内部不可能再有别的元素，所以其基线位置永远位于下边缘。
+某一个例子:
+<template>
+	<div class="container">
+		x
+		<span class="span1"></span>
+		<span class="span2"></span>
+	</div>
+	.container {
+		font-size: 14px;
+		border: 1px solid black;
+	}
+	.span1 {
+		display: inline-block;
+		height: 100px;
+		width: 100px;
+		background: #3596FC;
+		vertical-align: middle;
+	}
+	.span2 {
+		display: inline-block;
+		height: 40px;
+		width: 40px;
+		background: darkgreen;
+	}
+</template>
+
+19.BFC
+BFC是一个独立的渲染区域，只有Block-level box参与， 它规定了内部的Block-level Box如何布局，并且与这个区域外部毫不相干。
+BFC 就好像一个结界，结界里面的东西不能影响外面的布局，也就是说，BFC的子元素再翻江倒海，都不会影响外面的元素。
+
+BFC本身不会发生margin重叠。
+BFC可以彻底解决子元素浮动带来的的高度坍塌和文字环绕问题。
+
+
+BFC的创建方法
+根元素；
+浮动元素 (float不为none的元素)；
+绝对定位元素 (元素的position为absolute或fixed)；
+inline-blocks(元素的 display: inline-block)；
+表格单元格(元素的display: table-cell，HTML表格单元格默认属性)；
+overflow的值不为visible的元素；
+弹性盒 flex boxes (元素的display: flex或inline-flex)；
+
+内部的盒会在垂直方向一个接一个排列（可以看作BFC中有一个的常规流）；
+Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠；
+每一个盒子的左外边距应该和包含块的左边缘相接触。即使存在浮动也是如此，除非子盒子形成了一个新的BFC。
+BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然；
+计算BFC的高度时，考虑BFC所包含的所有元素，连浮动元素也参与计算；
+BFC的区域不会与float box重叠；
+
+display:inline-block;将两个div变为了BFC，所以此时不会发生上下margin重叠
+<template>
+	<div class="ctn">
+		<div class="container">
+		</div>
+		<div class="container">
+		</div>
+	</div>
+	.ctn {
+		float: left;
+		width: 100%;
+	}
+	.container {
+		margin: 10px;
+		background: #3596FC;
+		height: 20px;
+		display: inline-block;
+		width: 80%;
+	}
+</template>
+
+20.display: none与visibility: hidden
+display: none会影响css3的transition过渡效果。 但是display: none并不会影响css的animation动画的效果。
+如果希望元素不可见、不占据空间、资源会加载、DOM 可访问： display: none；
+如果希望元素不可见、不能点击、但占据空间、资源会加载，可以使用： visibility: hidden；
+如果希望元素不可见、不占据空间、显隐时可以又transition淡入淡出效果
+如果希望元素不可见、可以点击、占据空间，可以使用： opacity: 0；
+如果希望元素不可见、可以点击、不占据空间，可以使用： opacity: 0; position: abolute;；
+如果希望元素不可见、不能点击、占据空间，可以使用： position: relative; z-index: -1;；
+如果希望元素不可见、不能点击、不占据空间，可以使用： position: absolute ; z-index: -1;；
+
+display: none与visibility: hidden的区别
+display: none的元素不占据任何空间，visibility: hidden的元素空间保留；
+display: none会影响css3的transition过渡效果，visibility: hidden不会；
+display: none隐藏产生重绘 ( repaint ) 和回流 ( relfow )，visibility: hidden只会触发重绘；
+株连性：display: none的节点和子孙节点元素全都不可见，visibility: hidden的节点的子孙节点元素可以设置 visibility: visible显示。
+visibility: hidden属性值具有继承性，所以子孙元素默认继承了hidden而隐藏，但是当子孙元素重置为visibility: visible就不会被隐藏。
+
+outline-offset: -100px; /* 可用来实现+号的效果,需要具体调整 */

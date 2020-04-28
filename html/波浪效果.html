@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/common/common.css" />
+		<title>波浪效果</title>
+		<style>
+			#ctn {
+				height: 600px;
+			}
+			canvas {
+				background: #fff;
+				border: 2px dotted black;
+				margin-left: 100px;
+				margin-top: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="ctn">
+			<canvas id="myCanvas" width="800" height="600"></canvas>
+		</div>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script>
+		const FUNCTION_RANGE_MIN = -400;
+		const FUNCTION_RANGE_MAX = 400;
+		const LINE_COLOR = "#000000";
+		const SCALE = 50;
+		window.onload = function() {
+			const canvas = document.getElementById('myCanvas');
+			const ctx = canvas.getContext('2d');
+			drawAxis(ctx);
+			let offset = 1;
+			setInterval(function() {
+				drawByFunction(ctx, testFn, FUNCTION_RANGE_MIN + offset, FUNCTION_RANGE_MAX + offset);
+				drawAxis(ctx);
+				offset ++;
+				if (offset > 200) {
+					offset = 10;
+				}
+			}, 100);
+		};
+
+		function draw() {
+			clearCanvas(ctx);
+			content.strokeStyle = "#FF5D43";
+			content.beginPath();
+			content.moveTo(0, Math.floor(Math.random() * 200));
+			content.quadraticCurveTo(Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), 300, Math.floor(Math.random() *
+				200));
+			content.stroke();
+			content.globalCompositeOperation = 'source-over';
+			content.closePath();
+		}
+		function drawAxis(ctx) {
+			ctx.strokeStyle = LINE_COLOR;
+			ctx.beginPath();
+			ctx.moveTo(0, 300);
+			ctx.lineTo(800, 300);
+			ctx.moveTo(400, 0);
+			ctx.lineTo(400, 600);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		function drawByFunction(ctx, fn, min = FUNCTION_RANGE_MIN, max = FUNCTION_RANGE_MAX) {
+			clearCanvas(ctx);
+			ctx.beginPath();
+			ctx.moveTo(400, 300);
+			ctx.strokeStyle = LINE_COLOR;
+			const scale = max > fn(max);
+			for (let i = min; i < max; i ++) {
+				const xOffset = 400 + i;
+				const yOffset = scale ? 300 - fn(i) * 10 : 300 - fn(i / 10);
+				ctx.lineTo(xOffset, yOffset);
+			}
+			ctx.moveTo(400, 300);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		function testFn(x) {
+			return 0.1 * x * x * x - 4 * x * x + x + 10;
+		}
+		function clearCanvas(ctx) {
+			ctx.clearRect(0, 0, 800, 600);
+		}
+	</script>
+</html>

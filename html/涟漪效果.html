@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/common/common.css" />
+		<title>涟漪效果</title>
+		<style>
+			#ctn {
+				height: 600px;
+				position: relative;
+			}
+			#ctn > div {
+				border: 2px solid deepskyblue;
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+				border-radius: 50%;
+				opacity: 1;
+				animation: expand 5s ease-out infinite;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="ctn">
+			<div class="div1"></div>
+			<div class="div1"></div>
+			<div class="div1"></div>
+			<div class="div1"></div>
+			<div class="div1"></div>
+		</div>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script>
+		// left为width的二分之一则为原型,三分之一为某个起点开始向另一个方向扩展的波纹
+		$(function() {
+			const WIDTH = 600;
+			const HEIGHT = 600;
+			const LEFT = 200;
+			const TOP = 200;
+			$(".div1").each(function(index) {
+				$(this).css({
+					"animation-delay": -index + "s",
+					width: addPx(WIDTH),
+					height: addPx(HEIGHT),
+					left: addPx(LEFT),
+					top: addPx(TOP)
+				});
+				setKeyframes({
+					originWidth: 20,
+					originHeight: 20,
+					targetWidth: WIDTH,
+					targetHeight: HEIGHT,
+					originBorderWidth: 2,
+					targetBorderWidth: 10,
+					left: LEFT,
+					top: TOP
+				});
+			});
+		});
+		
+		// 好像可以用这种方式写入样式
+		// style.insertRule("@keyframes rotate_before{from{ transform: translate(0%,0%); }to{ transform: translate(0%,-"+param +"%);}}",9);
+		function addPx(num) {
+			return num + "px";
+		}
+		
+		function setKeyframes({ 
+			originWidth, originHeight, 
+			targetWidth, targetHeight, 
+			originBorderWidth, targetBorderWidth,
+			left, top
+		}) {
+			var style = document.createElement('style');
+			document.getElementsByTagName('head')[0].appendChild(style);
+			if (!window.createPopup) { /* For Safari */
+			   style.appendChild(document.createTextNode(''));
+			}
+			var s = document.styleSheets[document.styleSheets.length - 1];
+			s.insertRule(`
+				@keyframes expand {
+					0% {
+						width: ${originWidth}px;
+						height: ${originHeight}px;
+						border-width: ${originBorderWidth}px;
+						opacity: 1;
+					}
+					100% {
+						width: ${targetWidth}px;
+						height: ${targetHeight}px;
+						border-width: ${targetBorderWidth}px;
+						opacity: 0;
+						left: ${ targetWidth / 2 - left }px;
+						top: ${ targetHeight / 2 - top }px;
+					}
+				}
+			`);
+		}
+	</script>
+</html>

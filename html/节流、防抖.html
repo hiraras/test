@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>节流、防抖</title>
+		<style type="text/css">
+			.ctn {
+				height: 600px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ctn">
+			<button id="btn">click</button>
+		</div>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script>
+		function fangdou(fn = () => {}, time = 1000) {
+			let flag = true;
+			return function(e) {
+				if (flag) {
+					flag = false;
+					fn(e);
+					setTimeout(() => {
+						flag = true;
+					}, time);
+				}
+			}
+		}
+		window.onscroll = fangdou(function(e) {
+			console.log(e);
+		}, 100);
+		function jieliu(fn = () => {}, time = 1000) {
+			let lastExecTime = 0;
+			return function(e) {
+				let now = new Date().getTime();
+				if (now - lastExecTime >= time) {
+					fn(e);
+					lastExecTime = new Date().getTime();
+				}
+			}
+		}
+		$("#btn").click(jieliu(function(e) {
+			console.log(e);
+		}, 1000));
+	</script>
+</html>

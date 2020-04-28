@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/common/common.css" />
+		<title>负值margin的学习</title>
+		<style>
+			.ctn1 {
+				width: 200px;
+				height: 200px;
+				margin-left: 100px;
+				margin-top: 100px;
+				background: #3596FC;
+			}
+			.ctn1 .inner {
+				width: 40px;
+				height: 40px;
+				background: darkblue;
+				color: white;
+				display: inline-block;
+			}
+			.ctn1 .inner.div1 {
+				margin-right: -20px;
+				position: relative;
+			}
+			.ctn1 .inner.div2 {
+				background: salmon;
+			}
+		</style>
+		<style>
+			.ctn2 {
+				width: 200px;
+				height: 200px;
+				margin-left: 100px;
+				margin-top: 100px;
+				background: #3596FC;
+			}
+			.ctn2 .inner {
+				width: 40px;
+				height: 40px;
+				background: darkblue;
+				color: white;
+				display: inline-block;
+			}
+			.ctn2 .inner.div1 {
+				margin-right: -20px;
+				position: absolute;
+				width: 20px;
+			}
+			.ctn2 .inner.div2 {
+				background: salmon;
+			}
+		</style>
+		<style>
+			.ctn3 {
+				width: 200px;
+				height: 200px;
+				margin-left: 100px;
+				margin-top: 100px;
+				background: #3596FC;
+			}
+			.ctn3 .inner {
+				width: 60px;
+				height: 60px;
+				background: darkblue;
+				color: white;
+				display: inline-block;
+			}
+			.ctn3 .inner.div1 {
+				float: left;
+				margin-right: -20px;
+			}
+			.ctn3 .inner.div2 {
+				background: salmon;
+				float: left;
+			}
+		</style>
+		<style>
+			.apply1 {
+				margin-left: 50px;
+				margin-top: 50px;
+				display: inline-block;
+				width: 500px;
+				height: 200px;
+				margin-bottom: 50px;
+			}
+			.content {
+				background: yellow;
+				font-size: 48px;
+				font-weight: bold;
+				text-align: center;
+				line-height: 200px;
+			}
+			.title {
+				background: #000000;
+				color: white;
+				padding: 30px;
+				display: inline-block;
+				margin-left: -50px;
+				margin-bottom: -50px;
+			}
+		</style>
+		<style>
+			.apply2 {
+				border: 2px solid black;
+			}
+			.apply2::after {
+				display: block;
+				content: '';
+				height: 0;
+				clear: both;
+				font-size: 0;
+				opacity: 0;
+			}
+			.apply2 .left {
+				float: left;
+				width: 200px;
+				height: 200px;
+				background: #3596FC;
+				margin-right: -200px;
+				position: relative;
+			}
+			.apply2 .right {
+				float: left;
+				width: 100%;
+				height: 200px;
+				padding-left: 200px;
+				background: #FA8072;
+				box-sizing: border-box;
+			}
+		</style>
+		<style>
+			.apply3 {
+				border: 2px solid black;
+				margin-top: 20px;
+			}
+			.apply3::after {
+				display: block;
+				content: '';
+				height: 0;
+				clear: both;
+				font-size: 0px;
+				opacity: 0;
+			}
+			.apply3 .left {
+				float: left;
+				width: 200px;
+				height: 200px;
+				background: green;
+				margin-right: -200px;
+				position: relative;
+			}
+			.apply3 .middle {
+				box-sizing: border-box;
+				height: 200px;
+				padding: 0 200px;
+				width: 100%;
+				background: blue;
+				margin-right: -200px;
+				float: left;
+			}
+			.apply3 .right {
+				float: left;
+				width: 200px;
+				height: 200px;
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ctn1">
+			<!-- 
+				定位为static的元素，margin方向为top或者left，设置这两个方向的margin会让元素在原有位置上相应移动，
+				bottom和right的表现为对后面的元素的位置的影响。如设置正值加大两者兼具，负值则可能让后面的覆盖前面的元素
+				(注意:如果此时前面的元素设置了position: relative属性，则后面的元素被前面的元素覆盖，当然这里是指后面的元素没有定位属性).
+			-->
+			<div class="inner div1">lala...</div>
+			<div class="inner div2">lala...</div>
+		</div>
+		<div class="ctn2">
+			<!-- 
+				如果前面的元素设置了position: absolute属性,margin方向为top或者left，
+				同时因为已经脱离了文档流，设置margin-right和margin-bottom不会对后面的元素有影响；
+				与relative一样后面的元素会被前面的元素覆盖
+			-->
+			<div class="inner div1">lala...</div>
+			<div class="inner div2">lala...</div>
+		</div>
+		<div class="ctn3">
+			<!-- 
+				元素有设置float的情况下，margin方向为top或者float浮动的方向,其他表现和上面类似
+			-->
+			<div class="inner div1">lala...</div>
+			<div class="inner div2">lala...</div>
+		</div>
+		<div class="apply1">
+			<div class="title">
+				hi, this is title
+			</div>
+			<div class="content">
+				yooooooooooooo
+			</div>
+		</div>
+		<div class="apply2">
+			<div class="left">efef</div>
+			<div class="right">xxx</div>
+		</div>
+		<div class="apply3">
+			<div class="left"></div>
+			<div class="middle"></div>
+			<div class="right"></div>
+		</div>
+	</body>
+	<script src="../js/common/jquery-1.8.3.js"></script>
+	<script src="../js/common/utils.js"></script>
+	<script>
+	</script>
+</html>
